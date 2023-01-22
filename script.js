@@ -1,7 +1,13 @@
+let ENDOFNUMBER = false;
+let MAXCHARS = 13;
+
+
 function add(a,b){ return a+b; }
 function sub(a,b){ return a-b; }
 function mul(a,b){ return a*b; }
 function div(a,b){ if(b!=0){ return a/b; }else{ return "DIV"; }}
+function flip(a,b){ return -1*a; }
+function sqrt(a,b){ if(a>=0){ return Math.sqrt(a); } }
 
 function operate(op,a,b){
     return op(a,b);
@@ -14,7 +20,7 @@ const MEMORY = {
     secondOp: null
 };
 
-let ENDOFNUMBER = false;
+
 function placeDigit(e){
     const n = Number(e.target.textContent);
 
@@ -62,18 +68,6 @@ function inputOperator(e){
             MEMORY.operator = div;
             ENDOFNUMBER = true;
             break;
-        case "√":
-            console.log("SQRT");
-            // MEMORY.operator = add;
-            break;
-        case ".":
-            console.log("POINT");
-            // MEMORY.operator = add;
-            break;
-        case "±":
-            console.log("SIGNAL");
-            // MEMORY.operator = add;
-            break;
         default:
             console.log("Unknown operator");
             break;
@@ -93,6 +87,14 @@ function calculate(){
         MEMORY.screen = String(result);
         MEMORY.secondOp = null;
     }
+}
+
+function calculateUnary(){
+    MEMORY.screen = "0";
+    let result = operate(MEMORY.operator,MEMORY.firstOp, MEMORY.secondOp);
+    MEMORY.firstOp = null;
+    MEMORY.screen = String(result);
+    MEMORY.secondOp = null;
 }
 
 function inputMeta(e){
@@ -124,6 +126,29 @@ function inputMeta(e){
     updateScreen();
 }
 
+function inputUnary(e){
+    const op = e.target.textContent;
+    MEMORY.firstOp = Number(MEMORY.screen);
+    switch (op) {
+        case "√":
+            MEMORY.operator = sqrt;
+            calculateUnary();
+            ENDOFNUMBER = true;
+            break;
+        case ".":
+            console.log("POINT");
+            // MEMORY.operator = add;
+            break;
+        case "±":
+            MEMORY.operator = flip;
+            calculateUnary();
+            // calculate();
+            // ENDOFNUMBER = true;
+            break;
+    }
+    updateScreen();
+}
+
 
 function updateScreen(){
     const scr = document.querySelector(".screen");
@@ -139,17 +164,19 @@ function addEventDigit(){
     const keys = document.querySelectorAll(".number");
     keys.forEach(key => key.addEventListener('click',placeDigit));
 }
-
 function addEventOperator(){
     const keys = document.querySelectorAll(".operator");
     keys.forEach(key => key.addEventListener('click',inputOperator));
 }
-
 function addEventMeta(){
     const metaKeys = document.querySelectorAll(".meta");
     metaKeys.forEach(key => key.addEventListener('click',inputMeta))
 }
-
+function addEventUnary(){
+    const unary = document.querySelectorAll(".unary");
+    unary.forEach(key => key.addEventListener('click',inputUnary))
+}
 addEventDigit();
 addEventOperator();
 addEventMeta();
+addEventUnary();
