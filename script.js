@@ -21,3 +21,29 @@ console.log(operate(mul,5,3));
 console.log(operate(div,5,3));
 console.log(operate(div,5,0));
 
+const MEMORY = {
+    screen: "",
+    operator: null,
+    firstOp: null,
+    secondOp: null
+};
+
+function placeDigit(e){
+    const n = Number(e.target.textContent);
+
+    MEMORY.screen += String(n);
+    console.log();
+    updateScreen();
+}
+
+function updateScreen(){
+    const scr = document.querySelector(".screen");
+    scr.textContent = MEMORY.screen;
+}
+
+function addEventDigit(){
+    const keys = document.querySelectorAll(".number");
+    keys.forEach(key => key.addEventListener('click',placeDigit));
+}
+
+addEventDigit();
