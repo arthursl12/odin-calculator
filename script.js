@@ -8,7 +8,7 @@ function operate(op,a,b){
 }
 
 const MEMORY = {
-    screen: "",
+    screen: "0",
     operator: null,
     firstOp: null,
     secondOp: null
@@ -19,7 +19,12 @@ function placeDigit(e){
     const n = Number(e.target.textContent);
 
     if (!ENDOFNUMBER){
-        MEMORY.screen += String(n);
+        if (MEMORY.screen.length == 1 && MEMORY.screen == "0"){
+            MEMORY.screen = String(n);
+        }else{
+            MEMORY.screen += String(n);
+        }
+        
     }else{
         MEMORY.screen = String(n);
         ENDOFNUMBER = false;
@@ -80,12 +85,14 @@ function inputOperator(e){
 }
 
 function calculate(){
-    MEMORY.secondOp = Number(MEMORY.screen);
-    MEMORY.screen = "";
-    let result = operate(MEMORY.operator,MEMORY.firstOp, MEMORY.secondOp);
-    MEMORY.firstOp = result;
-    MEMORY.screen = String(result);
-    MEMORY.secondOp = null;
+    if (MEMORY.operator){
+        MEMORY.secondOp = Number(MEMORY.screen);
+        MEMORY.screen = "0";
+        let result = operate(MEMORY.operator,MEMORY.firstOp, MEMORY.secondOp);
+        MEMORY.firstOp = result;
+        MEMORY.screen = String(result);
+        MEMORY.secondOp = null;
+    }
 }
 
 function inputMeta(e){
@@ -95,14 +102,19 @@ function inputMeta(e){
             calculate();
             break;
         case "AC":
-            MEMORY.screen = "";
+            MEMORY.screen = "0";
             MEMORY.operator = null;
             MEMORY.firstOp = null;
             MEMORY.secondOp = null;
             ENDOFNUMBER = false;
             break;
         case "←":
-            MEMORY.screen = MEMORY.screen.slice(0,-1);
+            if(MEMORY.screen.length > 1){
+                MEMORY.screen = MEMORY.screen.slice(0,-1);
+            }else{
+                // == 1
+                MEMORY.screen = "0";
+            }
             console.log(`New screen: ${MEMORY.screen}`);
             break;
         default:

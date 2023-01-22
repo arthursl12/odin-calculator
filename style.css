@@ -38,17 +38,59 @@ body > h1 {
 /* || CONTENT */
 .content{
     display: flex;
-    justify-content: space-between;
+    /* justify-content: center; */
+    align-items: center;
     align-self: center;
-    flex-grow: 1;
+    flex-grow: 3;
 
-    border: 1px solid red;
+    border: 1px solid purple;
 }
 
 .calculator{
     border: 1px solid black;
-    width: auto;
-    height: auto;
+    /* width: auto; */
+    /* height: auto; */
+    padding: 10px 30px;
+    /* max-height: 250px; */
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+}
+
+.screen {
+    border: 1px solid green;
+    margin: 0px;
+    padding: 2px 8px;
+    min-height: 40px;
+    font-size: 32px;
+    text-align: right;
+}
+
+button{
+    font-size: 28px;
+    aspect-ratio: 1;
+    /* min-width: fit-content; */
+    min-height: 64px;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0px;
+    padding: 0px;
+}
+
+.buttons{
+    margin: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.button-row{
+    display: flex;
+    gap: 5px
 }
 
 
