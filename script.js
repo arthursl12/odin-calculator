@@ -7,20 +7,6 @@ function operate(op,a,b){
     return op(a,b);
 }
 
-
-
-console.log(add(5,3));
-console.log(sub(5,3));
-console.log(mul(5,3));
-console.log(div(5,3));
-console.log(div(5,0));
-
-console.log(operate(add,5,3));
-console.log(operate(sub,5,3));
-console.log(operate(mul,5,3));
-console.log(operate(div,5,3));
-console.log(operate(div,5,0));
-
 const MEMORY = {
     screen: "",
     operator: null,
@@ -28,22 +14,130 @@ const MEMORY = {
     secondOp: null
 };
 
+let ENDOFNUMBER = false;
 function placeDigit(e){
     const n = Number(e.target.textContent);
 
-    MEMORY.screen += String(n);
-    console.log();
+    if (!ENDOFNUMBER){
+        MEMORY.screen += String(n);
+    }else{
+        MEMORY.screen = String(n);
+        ENDOFNUMBER = false;
+    }    
     updateScreen();
 }
+
+function inputOperator(e){
+    if(!MEMORY.firstOp){
+        // This operator is inputted after first number
+        // Store first number and update screen
+        MEMORY.firstOp = Number(MEMORY.screen);
+        // MEMORY.screen = "";
+    }else{
+        // This operator is inputted after second number
+        // Must compute and use the result as first number
+        calculate();
+    }
+
+    const op = e.target.textContent;
+    switch (op) {
+        case "+":
+            MEMORY.operator = add;
+            ENDOFNUMBER = true;
+            break;
+        case "-":
+            MEMORY.operator = sub;
+            ENDOFNUMBER = true;
+            break;
+        case "x":
+            MEMORY.operator = mul;
+            ENDOFNUMBER = true;
+            break;
+        case "÷":
+            MEMORY.operator = div;
+            ENDOFNUMBER = true;
+            break;
+        case "√":
+            console.log("SQRT");
+            // MEMORY.operator = add;
+            break;
+        case ".":
+            console.log("POINT");
+            // MEMORY.operator = add;
+            break;
+        case "±":
+            console.log("SIGNAL");
+            // MEMORY.operator = add;
+            break;
+        default:
+            console.log("Unknown operator");
+            break;
+    }
+
+    
+
+    updateScreen();
+}
+
+function calculate(){
+    MEMORY.secondOp = Number(MEMORY.screen);
+    MEMORY.screen = "";
+    let result = operate(MEMORY.operator,MEMORY.firstOp, MEMORY.secondOp);
+    MEMORY.firstOp = result;
+    MEMORY.screen = String(result);
+    MEMORY.secondOp = null;
+}
+
+function inputMeta(e){
+    const op = e.target.textContent;
+    switch (op) {
+        case "=":
+            calculate();
+            break;
+        case "AC":
+            MEMORY.screen = "";
+            MEMORY.operator = null;
+            MEMORY.firstOp = null;
+            MEMORY.secondOp = null;
+            ENDOFNUMBER = false;
+            break;
+        case "←":
+            MEMORY.screen = MEMORY.screen.slice(0,-1);
+            console.log(`New screen: ${MEMORY.screen}`);
+            break;
+        default:
+            console.log("Unknown meta operator");
+            break;
+    }
+    updateScreen();
+}
+
 
 function updateScreen(){
     const scr = document.querySelector(".screen");
     scr.textContent = MEMORY.screen;
 }
 
+
+
+
+
+
 function addEventDigit(){
     const keys = document.querySelectorAll(".number");
     keys.forEach(key => key.addEventListener('click',placeDigit));
 }
 
+function addEventOperator(){
+    const keys = document.querySelectorAll(".operator");
+    keys.forEach(key => key.addEventListener('click',inputOperator));
+}
+
+function addEventMeta(){
+    const metaKeys = document.querySelectorAll(".meta");
+    metaKeys.forEach(key => key.addEventListener('click',inputMeta))
+}
+
 addEventDigit();
+addEventOperator();
+addEventMeta();
