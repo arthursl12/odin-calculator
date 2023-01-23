@@ -147,6 +147,7 @@ function inputUnary(e){
             break;
     }
     updateScreen();
+    MEMORY.firstOp = null;
 }
 
 
