@@ -1,4 +1,3 @@
-let ENDOFNUMBER = false;
 let NEXT_RESET = false;
 let MAXCHARS = 13;
 
@@ -31,8 +30,16 @@ function appendInput(e){
     updateScreen();
 }
 
+function roundString(str){
+    let intLen = String(parseInt(str)).length;
+    return String(Number(str).toFixed(MAXCHARS-1-intLen));
+}
 
 function updateScreen(){
+    if (MEMORY.screen.length > MAXCHARS){
+        MEMORY.screen = roundString(MEMORY.screen);
+    }
+
     const currOp = document.querySelector(".current-operation");
     currOp.textContent = MEMORY.screen;
 
