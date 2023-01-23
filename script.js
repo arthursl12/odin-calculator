@@ -91,7 +91,7 @@ function inputMeta(e){
     switch (op) {
         case "=":
             equalsOperation();
-            MEMORY.screen = MEMORY.firstOp;
+            MEMORY.screen = String(MEMORY.firstOp);
             MEMORY.firstOp = "";
             MEMORY.previousText = "";
             NEXT_RESET = true;
@@ -103,13 +103,15 @@ function inputMeta(e){
             MEMORY.secondOp = null;
             break;
         case "←":
-            if(MEMORY.screen.length > 1){
+            if (NEXT_RESET){
+                // Press backspace after a '='
+                MEMORY.screen = "0";
+            }else if(MEMORY.screen.length > 1){
                 MEMORY.screen = MEMORY.screen.slice(0,-1);
             }else{
                 // == 1
                 MEMORY.screen = "0";
             }
-            console.log(`New screen: ${MEMORY.screen}`);
             break;
         default:
             console.log("Unknown meta operator");
