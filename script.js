@@ -13,7 +13,7 @@ function operate(op,a,b){
 }
 
 const MEMORY = {
-    screen: "",
+    screen: "0",
     // operator: null,
     firstOp: null,
     secondOp: null,
@@ -22,8 +22,11 @@ const MEMORY = {
 
 
 function appendInput(e){
-    const n = Number(e.target.textContent);
-    MEMORY.screen += String(n);
+    const n = e.target.textContent;
+    if (n == "." && MEMORY.screen.includes(".")) { return; }
+    if (n == "." && MEMORY.screen == "0") { MEMORY.screen == "0."; }
+    else if (MEMORY.screen == "0") { MEMORY.screen = ""; }
+    MEMORY.screen += n;
     updateScreen();
 
     // if (!ENDOFNUMBER){

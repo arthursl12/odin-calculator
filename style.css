@@ -101,4 +101,9 @@ button{
     min-height: 20px;
 }
 
+.current-operation{
+    min-height: 40px;
+}
+
+
 
