@@ -8,35 +8,49 @@ function mul(a,b){ return a*b; }
 function div(a,b){ if(b!=0){ return a/b; }else{ return "DIV"; }}
 function flip(a,b){ return -1*a; }
 function sqrt(a,b){ if(a>=0){ return Math.sqrt(a); } }
-
 function operate(op,a,b){
     return op(a,b);
 }
 
 const MEMORY = {
-    screen: "0",
-    operator: null,
+    screen: "",
+    // operator: null,
     firstOp: null,
-    secondOp: null
+    secondOp: null,
+    previousText: ""
 };
 
 
-function placeDigit(e){
+function appendInput(e){
     const n = Number(e.target.textContent);
-
-    if (!ENDOFNUMBER){
-        if (MEMORY.screen.length == 1 && MEMORY.screen == "0"){
-            MEMORY.screen = String(n);
-        }else{
-            MEMORY.screen += String(n);
-        }
-        
-    }else{
-        MEMORY.screen = String(n);
-        ENDOFNUMBER = false;
-    }    
+    MEMORY.screen += String(n);
     updateScreen();
+
+    // if (!ENDOFNUMBER){
+    //     if (MEMORY.screen.length == 1 && MEMORY.screen == "0"){
+    //         MEMORY.screen = String(n);
+    //     }else{
+    //         MEMORY.screen += String(n);
+    //     }
+        
+    // }else{
+    //     MEMORY.screen = String(n);
+    //     ENDOFNUMBER = false;
+    // }    
+    // updateScreen();
 }
+
+
+function updateScreen(){
+    const currOp = document.querySelector(".current-operation");
+    currOp.textContent = MEMORY.screen;
+
+    const prevOp = document.querySelector(".previous-operation");
+    prevOp.textContent = MEMORY.previousText;
+}
+
+
+
 
 function inputOperator(e){
     if(!MEMORY.firstOp){
@@ -151,10 +165,6 @@ function inputUnary(e){
 }
 
 
-function updateScreen(){
-    const scr = document.querySelector(".screen");
-    scr.textContent = MEMORY.screen;
-}
 
 
 
@@ -163,7 +173,7 @@ function updateScreen(){
 
 function addEventDigit(){
     const keys = document.querySelectorAll(".number");
-    keys.forEach(key => key.addEventListener('click',placeDigit));
+    keys.forEach(key => key.addEventListener('click',appendInput));
 }
 function addEventOperator(){
     const keys = document.querySelectorAll(".operator");
