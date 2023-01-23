@@ -109,10 +109,17 @@ function inputMeta(e){
             if (NEXT_RESET){
                 // Press backspace after a '='
                 MEMORY.screen = "0";
-            }else if(MEMORY.screen.length > 1){
+            }else if(MEMORY.screen.length > 1 && !MEMORY.screen.includes("-")){
+                // Regular case
                 MEMORY.screen = MEMORY.screen.slice(0,-1);
+            }else if(MEMORY.screen.length > 2 && MEMORY.screen.includes("-")){
+                // Regular case in negative
+                MEMORY.screen = MEMORY.screen.slice(0,-1);
+            }else if(MEMORY.screen.length <= 2 && MEMORY.screen.includes("-")){
+                // Screen is like '-2'
+                MEMORY.screen = "0";
             }else{
-                // == 1
+                // Only one carachter
                 MEMORY.screen = "0";
             }
             break;
