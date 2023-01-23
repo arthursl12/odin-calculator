@@ -54,6 +54,7 @@ function inputOperator(e){
 }
 
 function equalsOperation(){
+    if (!MEMORY.op){ return; }
     let secondNumber = MEMORY.screen;
 
     // Do calculation
@@ -90,6 +91,7 @@ function inputMeta(e){
     const op = e.target.textContent;
     switch (op) {
         case "=":
+            if (!MEMORY.op) { break; }
             equalsOperation();
             MEMORY.screen = String(MEMORY.firstOp);
             MEMORY.firstOp = "";
@@ -97,6 +99,7 @@ function inputMeta(e){
             NEXT_RESET = true;
             break;
         case "AC":
+            MEMORY.previousText = "";
             MEMORY.screen = "0";
             MEMORY.op = null;
             MEMORY.firstOp = null;
@@ -122,22 +125,17 @@ function inputMeta(e){
 
 function inputUnary(e){
     const op = e.target.textContent;
-    MEMORY.firstOp = Number(MEMORY.screen);
+    // MEMORY.firstOp = Number(MEMORY.screen);
     switch (op) {
         case "√":
-            MEMORY.operator = sqrt;
-            calculateUnary();
-            ENDOFNUMBER = true;
+            MEMORY.screen = String(sqrt(Number(MEMORY.screen),0));
             break;
         case "±":
-            MEMORY.operator = flip;
-            calculateUnary();
-            // calculate();
-            // ENDOFNUMBER = true;
+            MEMORY.screen = String(flip(Number(MEMORY.screen),0));
             break;
     }
     updateScreen();
-    MEMORY.firstOp = null;
+    // MEMORY.firstOp = null;
 }
 
 
