@@ -1,4 +1,5 @@
 let ENDOFNUMBER = false;
+let NEXT_RESET = false;
 let MAXCHARS = 13;
 
 function add(a,b){ return a+b; }
@@ -13,7 +14,7 @@ function operate(op,a,b){
 
 const MEMORY = {
     screen: "0",
-    // operator: null,
+    op: null,
     firstOp: null,
     secondOp: null,
     previousText: ""
@@ -22,8 +23,9 @@ const MEMORY = {
 
 function appendInput(e){
     const n = e.target.textContent;
-    if (n == "." && MEMORY.screen.includes(".")) { return; }
-    if (n == "." && MEMORY.screen == "0") { MEMORY.screen == "0."; }
+    if (n == "." && MEMORY.screen == "0") { MEMORY.screen == "0."; NEXT_RESET = false; }
+    else if (n == "." && MEMORY.screen.includes(".")) { return; }
+    else if (NEXT_RESET) { MEMORY.screen = ""; NEXT_RESET = false; }
     else if (MEMORY.screen == "0") { MEMORY.screen = ""; }
     MEMORY.screen += n;
     updateScreen();
@@ -92,13 +94,13 @@ function inputMeta(e){
             MEMORY.screen = MEMORY.firstOp;
             MEMORY.firstOp = "";
             MEMORY.previousText = "";
+            NEXT_RESET = true;
             break;
         case "AC":
             MEMORY.screen = "0";
-            MEMORY.operator = null;
+            MEMORY.op = null;
             MEMORY.firstOp = null;
             MEMORY.secondOp = null;
-            ENDOFNUMBER = false;
             break;
         case "←":
             if(MEMORY.screen.length > 1){
@@ -124,10 +126,6 @@ function inputUnary(e){
             MEMORY.operator = sqrt;
             calculateUnary();
             ENDOFNUMBER = true;
-            break;
-        case ".":
-            console.log("POINT");
-            // MEMORY.operator = add;
             break;
         case "±":
             MEMORY.operator = flip;
