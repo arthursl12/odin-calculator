@@ -132,7 +132,6 @@ function inputMeta(e){
 
 function inputUnary(e){
     const op = e.target.textContent;
-    // MEMORY.firstOp = Number(MEMORY.screen);
     switch (op) {
         case "√":
             MEMORY.screen = String(sqrt(Number(MEMORY.screen),0));
@@ -142,7 +141,6 @@ function inputUnary(e){
             break;
     }
     updateScreen();
-    // MEMORY.firstOp = null;
 }
 
 

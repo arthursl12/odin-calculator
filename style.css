@@ -42,16 +42,15 @@ body > h1 {
     align-items: center;
     align-self: center;
     flex-grow: 3;
-
-    border: 1px solid purple;
+    gap: 20px;
+    /* border: 1px solid purple; */
 }
 
 .calculator{
-    border: 1px solid black;
-    /* width: auto; */
-    /* height: auto; */
+    border: 5px solid #4d4843;
+    border-radius: 20px;
+    background-color:#7e776e;
     padding: 10px 30px;
-    /* max-height: 250px; */
 
     display: flex;
     flex-direction: column;
@@ -61,8 +60,10 @@ body > h1 {
 }
 
 .screen {
-    border: 1px solid green;
-    margin: 0px;
+    /* border: 1px solid green; */
+    border-radius: 10px;
+    background-color: #a79e94;
+    margin: 10px 0px 18px;
     padding: 2px 8px;
     min-height: 40px;
     max-width: 280px;
