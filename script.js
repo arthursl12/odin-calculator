@@ -28,19 +28,6 @@ function appendInput(e){
     else if (MEMORY.screen == "0") { MEMORY.screen = ""; }
     MEMORY.screen += n;
     updateScreen();
-
-    // if (!ENDOFNUMBER){
-    //     if (MEMORY.screen.length == 1 && MEMORY.screen == "0"){
-    //         MEMORY.screen = String(n);
-    //     }else{
-    //         MEMORY.screen += String(n);
-    //     }
-        
-    // }else{
-    //     MEMORY.screen = String(n);
-    //     ENDOFNUMBER = false;
-    // }    
-    // updateScreen();
 }
 
 
@@ -52,48 +39,78 @@ function updateScreen(){
     prevOp.textContent = MEMORY.previousText;
 }
 
-
-
-
 function inputOperator(e){
-    if(!MEMORY.firstOp){
-        // This operator is inputted after first number
-        // Store first number and update screen
-        MEMORY.firstOp = Number(MEMORY.screen);
-        // MEMORY.screen = "";
-    }else{
-        // This operator is inputted after second number
-        // Must compute and use the result as first number
-        calculate();
-    }
-
     const op = e.target.textContent;
-    switch (op) {
-        case "+":
-            MEMORY.operator = add;
-            ENDOFNUMBER = true;
-            break;
-        case "-":
-            MEMORY.operator = sub;
-            ENDOFNUMBER = true;
-            break;
-        case "x":
-            MEMORY.operator = mul;
-            ENDOFNUMBER = true;
-            break;
-        case "÷":
-            MEMORY.operator = div;
-            ENDOFNUMBER = true;
-            break;
-        default:
-            console.log("Unknown operator");
-            break;
+    if(!MEMORY.previousText){
+        MEMORY.firstOp = MEMORY.screen;
+    }else{
+        let secondNumber = MEMORY.screen;
+
+        // Do calculation
+        let result = operate(
+            MEMORY.op, 
+            Number(MEMORY.firstOp), 
+            Number(secondNumber))
+
+        // Store next and update stored result
+        MEMORY.firstOp = result;
     }
+    MEMORY.previousText = `${MEMORY.firstOp} ${op}`;
+    MEMORY.op = getOperatorFunction(op);
+    MEMORY.screen = "";
+    updateScreen();
+}
+
+
+function getOperatorFunction(op_str){
+    switch (op_str) {
+        case "+": return add;
+        case "-": return sub;
+        case "x": return mul;
+        case "÷": return div;
+        default: console.log("Unknown operator"); return "";
+    }
+}
+
+// function inputOperator(e){
+//     if(!MEMORY.firstOp){
+//         // This operator is inputted after first number
+//         // Store first number and update screen
+//         MEMORY.firstOp = Number(MEMORY.screen);
+//         // MEMORY.screen = "";
+//     }else{
+//         // This operator is inputted after second number
+//         // Must compute and use the result as first number
+//         calculate();
+//     }
+
+//     const op = e.target.textContent;
+//     switch (op) {
+//         case "+":
+//             MEMORY.operator = add;
+//             ENDOFNUMBER = true;
+//             break;
+//         case "-":
+//             MEMORY.operator = sub;
+//             ENDOFNUMBER = true;
+//             break;
+//         case "x":
+//             MEMORY.operator = mul;
+//             ENDOFNUMBER = true;
+//             break;
+//         case "÷":
+//             MEMORY.operator = div;
+//             ENDOFNUMBER = true;
+//             break;
+//         default:
+//             console.log("Unknown operator");
+//             break;
+//     }
 
     
 
-    updateScreen();
-}
+//     updateScreen();
+// }
 
 function calculate(){
     if (MEMORY.operator){
